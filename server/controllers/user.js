@@ -1,3 +1,5 @@
+const mongoose = require('mongoose');
+
 const User = require('../models/user');
 const errorValidator = require('../util/errorValidator');
 
@@ -43,8 +45,8 @@ exports.createUser = (req, res) => {
             });
     } catch (error) {
         res.status(500).json({
-            message: "Hubo un error en el servidor.",
-            success: false
+            success: false,
+            message: "Hubo un error en el servidor."
         });
     }
 }
@@ -81,8 +83,50 @@ exports.readUsers = (req, res) => {
             });
     } catch (error) {
         res.status(500).json({
-            message: "Hubo un error en el servidor.",
-            success: false
+            success: false,
+            message: "Hubo un error en el servidor."
+        });
+    }
+}
+
+exports.readUserById = (req, res) => {
+    try {
+        if (!mongoose.isValidObjectId(req.params.id)) {
+            res.status(400).json({
+                success: false,
+                message: "El identificador del Usuario tiene problemas de validación.",
+                errors: ["El tipo del identificador id es incorrecto."]
+            });
+            return;
+        }
+
+        User.findById(req.params.id)
+            .then(user => {
+                if (user === null) {
+                    res.status(200).json({
+                        success: true,
+                        message: "No se encontraron usuarios con ese identificador para listar.",
+                        data: []
+                    });
+                    return;
+                }
+
+                res.status(200).json({
+                    success: true,
+                    message: "El usuario se listo correctamente.",
+                    data: user
+                });
+            })
+            .catch(error => {
+                res.status(400).json({
+                    success: false,
+                    message: "Hubo un error al listar el usuario."
+                });
+            });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "Hubo un error en el servidor."
         });
     }
 }
