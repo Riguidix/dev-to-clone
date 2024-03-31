@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var app = express();
+require('./config/database').mongoConnect();
 
 app.use(logger('dev'));
 app.use(express.json());
