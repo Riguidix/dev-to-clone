@@ -20,8 +20,8 @@ exports.createUser = (req, res) => {
         newUser.save()
             .then(() => {
                 res.status(200).json({
-                    exito: true,
-                    msg: "El usuario se ha creado correctamente."
+                    success: true,
+                    message: "El usuario se ha creado correctamente."
                 });
             })
             .catch((error) => {
@@ -29,16 +29,54 @@ exports.createUser = (req, res) => {
 
                 if (validationErrors) {
                     res.status(400).json({
-                        exito: false,
-                        msg: "La creación del usuario tiene problemas de validación.",
+                        success: false,
+                        message: "La creación del usuario tiene problemas de validación.",
                         errors: validationErrors
                     });
                     return;
                 }
 
                 res.status(400).json({
-                    exito: false,
-                    msg: "Hubo un error al crear el usuario."
+                    success: false,
+                    message: "Hubo un error al crear el usuario."
+                });
+            });
+    } catch (error) {
+        res.status(500).json({
+            message: "Hubo un error en el servidor.",
+            success: false
+        });
+    }
+}
+
+/**
+ * Find all Users
+ * @param {Object} req 
+ * @param {Object} res 
+ */
+exports.readUsers = (req, res) => {
+    try {
+        User.find({})
+            .then(users => {
+                if (users.length === 0 || users === null) {
+                    res.status(200).json({
+                        success: true,
+                        message: "No se encontraron usuarios para listar.",
+                        data: users
+                    });
+                    return;
+                }
+
+                res.status(200).json({
+                    success: true,
+                    message: "Los usuarios se listaron correctamente.",
+                    data: users
+                });
+            })
+            .catch(error => {
+                res.status(400).json({
+                    success: false,
+                    message: "Hubo un error al listar los usuarios."
                 });
             });
     } catch (error) {
