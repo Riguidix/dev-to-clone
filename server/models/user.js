@@ -58,6 +58,16 @@ userSchema.pre('save', function (next) {
     });
 });
 
+
+/**
+ * TODO: validate if we can use findbyidandupdate
+ * this same method doesn't recognize that mongo query
+ */
+userSchema.pre('findOneAndUpdate', async function (next) {
+    this._update.password = bcrypt.hashSync(this._update.password, SALT_WORK_FACTOR);
+    next();
+});
+
 userSchema.methods.comparePassword = function (candidatePassword, callback) {
     bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
         if (err) {

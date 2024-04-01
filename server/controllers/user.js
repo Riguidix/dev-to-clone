@@ -89,6 +89,12 @@ exports.readUsers = (req, res) => {
     }
 }
 
+/**
+ * Find ann User by ID
+ * @param {Object} req 
+ * @param {Object} res
+ * @param {ObjecID} id 
+ */
 exports.readUserById = (req, res) => {
     try {
         if (!mongoose.isValidObjectId(req.params.id)) {
@@ -121,6 +127,74 @@ exports.readUserById = (req, res) => {
                 res.status(400).json({
                     success: false,
                     message: "Hubo un error al listar el usuario."
+                });
+            });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "Hubo un error en el servidor."
+        });
+    }
+}
+
+/**
+ * Find ann User by ID
+ * @param {Object} req 
+ * @param {Object} res
+ * @param {ObjecID} id 
+ */
+exports.updateUser = (req, res) => {
+    try {
+        if (!mongoose.isValidObjectId(req.params.id)) {
+            res.status(400).json({
+                success: false,
+                message: "El identificador del Usuario tiene problemas de validación.",
+                errors: ["El tipo del identificador id es incorrecto."]
+            });
+            return;
+        }
+
+        let updateUser = {
+            username: req.body.username,
+            email: req.body.email,
+            password: req.body.password,
+            profilePicture: `https://joesch.moe/api/v1/${ req.body.username }`,
+            website: req.body.website,
+            bio: req.body.bio
+        }
+
+        User.findOneAndUpdate({ _id: req.params.id }, updateUser, { runValidators: true, new: true })
+            .then(user => {
+                if (user === null) {
+                    res.status(200).json({
+                        success: true,
+                        message: "No se encontraron usuarios con ese identificador para actualizar.",
+                        data: []
+                    });
+                    return;
+                }
+
+                res.status(200).json({
+                    success: true,
+                    message: "El usuario se ha actualizado correctamente.",
+                    data: user
+                });
+            })
+            .catch(error => {
+                let validationErrors = errorValidator(error);
+
+                if (validationErrors) {
+                    res.status(400).json({
+                        success: false,
+                        message: "La actualización del usuario tiene problemas de validación.",
+                        errors: validationErrors
+                    });
+                    return;
+                }
+
+                res.status(400).json({
+                    success: false,
+                    message: "Hubo un error al actualizar el usuario."
                 });
             });
     } catch (error) {
