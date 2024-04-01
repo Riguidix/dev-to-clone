@@ -1,7 +1,60 @@
 const mongoose = require('mongoose');
+const jwt = require("jsonwebtoken");
 
 const User = require('../models/user');
 const errorValidator = require('../util/errorValidator');
+
+/**
+ * Login an User
+ * @param {Object} req 
+ * @param {Object} res 
+ */
+exports.login = (req, res) => {
+    try {
+        User.findOne({ username: req.body.username })
+            .then(user => {
+                if (user === null) {
+                    res.status(200).json({
+                        success: true,
+                        message: "El usuario y/o contraseña son incorrectos",
+                        data: []
+                    });
+                    return;
+                }
+
+                user.comparePassword(req.body.password, function (error, isMatch) {
+                    if (error || !isMatch) {
+                        res.status(200).json({
+                            success: true,
+                            message: "El usuario y/o contraseña son incorrectos",
+                            data: []
+                        });
+                        return;
+                    } else {
+                        res.status(200).json({                           
+                            success: true,
+                            token: jwt.sign({
+                                id: user.id,
+                                user: user.username
+                            }, process.env.SECRET_TOKEN),
+                            message: "El usuario ha ingresado correctamente."
+                        });
+                    }
+                });
+            })
+            .catch(error => {
+                res.status(400).json({
+                    success: false,
+                    message: "Hubo un error al ingresar el usuario."
+                });
+            });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "Hubo un error en el servidor."
+        });
+    }
+}
 
 /**
  * Creates a new User
