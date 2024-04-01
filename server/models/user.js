@@ -58,7 +58,6 @@ userSchema.pre('save', function (next) {
     });
 });
 
-
 /**
  * TODO: validate if we can use findbyidandupdate
  * this same method doesn't recognize that mongo query

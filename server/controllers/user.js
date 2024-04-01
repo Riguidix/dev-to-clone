@@ -263,3 +263,32 @@ exports.updateUserPass = (req, res) => {
         });
     }
 }
+
+/**
+ * Find an User by ID and Delete
+ * @param {Object} req 
+ * @param {Object} res
+ * @param {ObjecID} id 
+ */
+exports.deleteUser = (req, res) => {
+    try {
+        User.findByIdAndDelete(req.params.id)
+            .then(() => {
+                res.status(200).json({
+                    success: true,
+                    message: "El usuario se ha eliminado correctamente."
+                });
+            })
+            .catch(error => {
+                res.status(400).json({
+                    success: false,
+                    message: "Hubo un error al eliminar el usuario."
+                });
+            });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "Hubo un error en el servidor."
+        });
+    }
+}
