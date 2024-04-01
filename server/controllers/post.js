@@ -261,6 +261,62 @@ exports.updatePostComment = (req, res) => {
 }
 
 /**
+ * Find a Post by ID and Push a like
+ * @param {Object} req 
+ * @param {Object} res 
+ */
+exports.updatePostLikes = (req, res) => {
+    try {
+        if (!mongoose.isValidObjectId(req.params.id)) {
+            res.status(400).json({
+                success: false,
+                message: "El identificador del Post tiene problemas de validación.",
+                errors: ["El tipo del identificador id es incorrecto."]
+            });
+            return;
+        }
+
+        if (!mongoose.isValidObjectId(req.body.user)) {
+            res.status(400).json({
+                success: false,
+                message: "El identificador del Usuario tiene problemas de validación.",
+                errors: ["El tipo del identificador id es incorrecto."]
+            });
+            return;
+        }
+
+        Post.findByIdAndUpdate(req.params.id, { $push: { likes: req.body.user } }, { runValidators: true, new: true })
+            .then(post => {
+                if (post === null) {
+                    res.status(200).json({
+                        success: true,
+                        message: "No se encontraron posts con ese identificador para actualizar.",
+                        data: []
+                    });
+                    return;
+                }
+
+                res.status(200).json({
+                    success: true,
+                    message: "El like del post se ha actualizado correctamente.",
+                    data: post
+                });
+            })
+            .catch(error => {
+                res.status(400).json({
+                    success: false,
+                    message: "Hubo un error al actualizar el comentario del post."
+                });
+            });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "Hubo un error en el servidor."
+        });
+    }
+}
+
+/**
  * Find a Post by ID and Delete
  * @param {Object} req 
  * @param {Object} res 
