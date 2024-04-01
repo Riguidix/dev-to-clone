@@ -32,7 +32,13 @@ const userSchema = new Schema({
     bio: {
        type: String,
        default: '' 
-    }
+    },
+    posts: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Post'
+        }
+    ]
 });
 
 userSchema.pre('save', function (next) {

@@ -1,0 +1,59 @@
+const mongoose = require('mongoose');
+const Post = require('../models/post');
+
+const errorValidator = require('../util/errorValidator');
+
+/**
+ * Create a Post
+ * @param {Object} req 
+ * @param {Object} res 
+ */
+exports.createPost = (req, res) => {
+    try {
+        if (!mongoose.isValidObjectId(req.body.author)) {
+            res.status(400).json({
+                success: false,
+                message: "El identificador del autor del post tiene problemas de validación.",
+                errors: ["El tipo del identificador author es incorrecto."]
+            });
+            return;
+        }
+
+        let newPost = new Post({
+            title: req.body.title,
+            content: req.body.content,
+            backgroundImage: req.body.backgroundImage,
+            author: req.body.author
+        });
+
+        newPost.save()
+            .then(() => {
+                res.status(200).json({
+                    success: true,
+                    message: "El post se ha creado correctamente."
+                });
+            })
+            .catch((error) => {
+                let validationErrors = errorValidator(error);
+
+                if (validationErrors) {
+                    res.status(400).json({
+                        success: false,
+                        message: "La creación del post tiene problemas de validación.",
+                        errors: validationErrors
+                    });
+                    return
+                }
+
+                res.status(400).json({
+                    success: false,
+                    message: "Hubo un error al crear el post."
+                });
+            });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "Hubo un error en el servidor."
+        });
+    }
+}
