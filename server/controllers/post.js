@@ -57,3 +57,41 @@ exports.createPost = (req, res) => {
         });
     }
 }
+
+/**
+ * Create a Post
+ * @param {Object} req 
+ * @param {Object} res 
+ */
+exports.readPosts = (req, res) => {
+    try {
+        Post.find({})
+            .then(posts => {
+                if (posts.length === 0 || posts === null) {
+                    res.status(200).json({
+                        success: true,
+                        message: "No se encontraron posts para listar.",
+                        data: posts
+                    });
+                    return;
+                }
+
+                res.status(200).json({
+                    success: true,
+                    message: "Los usuarios se listaron correctamente.",
+                    data: posts
+                });
+            })
+            .catch(error => {
+                res.status(400).json({
+                    success: false,
+                    message: "Hubo un error al listar los posts."
+                });
+            });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "Hubo un error en el servidor."
+        });
+    }
+}
