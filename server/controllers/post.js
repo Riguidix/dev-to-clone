@@ -207,3 +207,40 @@ exports.updatePost = (req, res) => {
         });
     }
 }
+
+/**
+ * Find a Post by ID and Delete
+ * @param {Object} req 
+ * @param {Object} res 
+ */
+exports.deletePost = (req, res) => {
+    try {
+        if (!mongoose.isValidObjectId(req.params.id)) {
+            res.status(400).json({
+                success: false,
+                message: "El identificador del Post tiene problemas de validación.",
+                errors: ["El tipo del identificador id es incorrecto."]
+            });
+            return;
+        }
+
+        Post.findByIdAndDelete(req.params.id)
+            .then(() => {
+                res.status(200).json({
+                    success: true,
+                    message: "El post se ha eliminado correctamente."
+                });
+            })
+            .catch(error => {
+                res.status(400).json({
+                    success: false,
+                    message: "Hubo un error al eliminar el post."
+                });
+            });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "Hubo un error en el servidor."
+        });
+    }
+}
