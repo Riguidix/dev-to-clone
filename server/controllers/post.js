@@ -142,3 +142,68 @@ exports.readPostById = (req, res) => {
         });
     }
 }
+
+/**
+ * Find a Post by ID and Update
+ * @param {Object} req 
+ * @param {Object} res 
+ */
+exports.updatePost = (req, res) => {
+    try {
+        if (!mongoose.isValidObjectId(req.params.id)) {
+            res.status(400).json({
+                success: false,
+                message: "El identificador del Post tiene problemas de validación.",
+                errors: ["El tipo del identificador id es incorrecto."]
+            });
+            return;
+        }
+
+        let updatePost = {
+            title: req.body.title,
+            content: req.body.content,
+            backgroundImage: req.body.backgroundImage,
+            author: req.body.author
+        }
+
+        Post.findByIdAndUpdate(req.params.id, updatePost, { runValidators: true, new: true })
+            .then(post => {
+                if (post === null) {
+                    res.status(200).json({
+                        success: true,
+                        message: "No se encontraron posts con ese identificador para actualizar.",
+                        data: []
+                    });
+                    return;
+                }
+
+                res.status(200).json({
+                    success: true,
+                    message: "El post se ha actualizado correctamente.",
+                    data: post
+                });
+            })
+            .catch(error => {
+                let validationErrors = errorValidator(error);
+
+                if (validationErrors) {
+                    res.status(400).json({
+                        success: false,
+                        message: "La actualización del post tiene problemas de validación.",
+                        errors: validationErrors
+                    });
+                    return;
+                }
+
+                res.status(400).json({
+                    success: false,
+                    message: "Hubo un error al actualizar el post."
+                });
+            });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "Hubo un error en el servidor."
+        });
+    }
+}
