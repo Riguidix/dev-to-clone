@@ -59,7 +59,7 @@ exports.createPost = (req, res) => {
 }
 
 /**
- * Create a Post
+ * Read all Posts
  * @param {Object} req 
  * @param {Object} res 
  */
@@ -86,6 +86,53 @@ exports.readPosts = (req, res) => {
                 res.status(400).json({
                     success: false,
                     message: "Hubo un error al listar los posts."
+                });
+            });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "Hubo un error en el servidor."
+        });
+    }
+}
+
+/**
+ * Read a Post by ID
+ * @param {Object} req 
+ * @param {Object} res 
+ */
+exports.readPostById = (req, res) => {
+    try {
+        if (!mongoose.isValidObjectId(req.params.id)) {
+            res.status(400).json({
+                success: false,
+                message: "El identificador del Post tiene problemas de validación.",
+                errors: ["El tipo del identificador id es incorrecto."]
+            });
+            return;
+        }
+
+        Post.findById(req.params.id)
+            .then(post => {
+                if (post === null) {
+                    res.status(200).json({
+                        success: true,
+                        message: "No se encontraron posts con ese identificador para listar.",
+                        data: []
+                    });
+                    return;
+                }
+
+                res.status(200).json({
+                    success: true,
+                    message: "El post se listo correctamente.",
+                    data: post
+                });
+            })
+            .catch(error => {
+                res.status(400).json({
+                    success: false,
+                    message: "Hubo un error al listar el usuario."
                 });
             });
     } catch (error) {
