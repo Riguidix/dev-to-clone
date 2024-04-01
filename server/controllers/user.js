@@ -90,7 +90,7 @@ exports.readUsers = (req, res) => {
 }
 
 /**
- * Find ann User by ID
+ * Find an User by ID
  * @param {Object} req 
  * @param {Object} res
  * @param {ObjecID} id 
@@ -138,7 +138,7 @@ exports.readUserById = (req, res) => {
 }
 
 /**
- * Find ann User by ID
+ * Find an User by ID amd Update
  * @param {Object} req 
  * @param {Object} res
  * @param {ObjecID} id 
@@ -188,6 +188,65 @@ exports.updateUser = (req, res) => {
                         success: false,
                         message: "La actualización del usuario tiene problemas de validación.",
                         errors: validationErrors
+                    });
+                    return;
+                }
+
+                res.status(400).json({
+                    success: false,
+                    message: "Hubo un error al actualizar el usuario."
+                });
+            });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "Hubo un error en el servidor."
+        });
+    }
+}
+
+/**
+ * Find an User by ID and Update his password
+ * @param {Object} req 
+ * @param {Object} res
+ * @param {ObjecID} id 
+ */
+exports.updateUserPass = (req, res) => {
+    try {
+        if (!mongoose.isValidObjectId(req.params.id)) {
+            res.status(400).json({
+                success: false,
+                message: "El identificador del Usuario tiene problemas de validación.",
+                errors: ["El tipo del identificador id es incorrecto."]
+            });
+            return;
+        }
+
+        let updatePassword = { password: req.body.password }
+
+        User.findOneAndUpdate({ _id: req.params.id }, updatePassword , { new: true })
+            .then(user => {
+                if (user === null) {
+                    res.status(200).json({
+                        success: true,
+                        message: "No se encontraron usuarios con ese identificador para actualizar.",
+                        data: []
+                    });
+                    return;
+                }
+
+                res.status(200).json({
+                    success: true,
+                    message: "La contraseña del usuario se ha actualizado correctamente.",
+                    data: user
+                });
+            })
+            .catch(error => {
+                if (req.body.password === undefined || req.body.password.length < 8) {
+                    res.status(400).json({
+                        success: false,
+                        message: "La contraseña es requerida para su actualiación.",
+                        errors: ["Hubo un error al actualizar la contraseña"]
                     });
                     return;
                 }
