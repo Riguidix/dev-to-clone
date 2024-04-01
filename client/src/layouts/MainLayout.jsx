@@ -1,10 +1,13 @@
 import { Outlet } from 'react-router-dom';
 
+import Header from '../components/layout/Header';
+import Footer from '../components/layout/Footer';
+
 export default function MainLayout() {
     return(
-        <div className='bg-red-500 grid grid-rows-12 container h-screen w-full'>
+        <div className='grid grid-rows-12 h-screen w-full'>
             <div className='row-span-1 text-center'>
-                header
+                <Header />
             </div>
 
             <div className='row-span-10'>
@@ -12,7 +15,7 @@ export default function MainLayout() {
             </div>
 
             <div className='row-span-1 text-center'>
-                footer
+                <Footer />
             </div>
         </div>
     );
