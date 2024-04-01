@@ -4,7 +4,7 @@ import AppRouter from './AppRouter';
 
 export default function App() {
 	return (
-		<div className='App bg-green-500 flex items-center justify-center h-screen w-screen'>
+		<div className='App bg-slate-50 flex items-center justify-center h-screen w-screen'>
 			<BrowserRouter>
 				<AppRouter />
 			</BrowserRouter>
