@@ -325,6 +325,15 @@ exports.updateUserPass = (req, res) => {
  */
 exports.deleteUser = (req, res) => {
     try {
+        if (!mongoose.isValidObjectId(req.params.id)) {
+            res.status(400).json({
+                success: false,
+                message: "El identificador del Usuario tiene problemas de validación.",
+                errors: ["El tipo del identificador id es incorrecto."]
+            });
+            return;
+        }
+
         User.findByIdAndDelete(req.params.id)
             .then(() => {
                 res.status(200).json({
