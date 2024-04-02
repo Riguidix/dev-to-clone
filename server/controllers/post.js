@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Post = require('../models/post');
+const User = require('../models/user');
 
 const errorValidator = require('../util/errorValidator');
 
@@ -27,11 +28,31 @@ exports.createPost = (req, res) => {
         });
 
         newPost.save()
-            .then(() => {
-                res.status(200).json({
-                    success: true,
-                    message: "El post se ha creado correctamente."
-                });
+            .then((post) => {
+                User.findById(req.body.author)
+                    .then(user => {
+                        user.posts.push(post);
+
+                        user.save()
+                            .then(user => {
+                                res.status(200).json({
+                                    success: true,
+                                    message: "El post se ha guardado en el usuario correctamente."
+                                });
+                            })
+                            .catch(error => {
+                                res.status(200).json({
+                                    success: true,
+                                    message: "Hubo un error al guardar el post en el usuario."
+                                });
+                            });
+                    })
+                    .catch(error => {
+                        res.status(200).json({
+                            success: true,
+                            message: "Hubo un error al listar el usuario."
+                        });
+                    });
             })
             .catch((error) => {
                 let validationErrors = errorValidator(error);
