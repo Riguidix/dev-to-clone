@@ -38,7 +38,7 @@ exports.login = (req, res) => {
                                 user: user.username
                             }, process.env.SECRET_TOKEN),
                             message: "El usuario ha ingresado correctamente.",
-
+                            data: user.id
                         });
                     }
                 });

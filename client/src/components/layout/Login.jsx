@@ -1,10 +1,10 @@
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 
 import Button from "../Button";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
 export default function Login({ handleToggle }) {
     const [email, setEmail] = useState('');
@@ -22,8 +22,8 @@ export default function Login({ handleToggle }) {
             axios.post('http://localhost:3000/api/users/login', user)
                 .then(response => {
                     if (response.data.token && response.data.success) {
-                        console.log(response.data);
                         localStorage.setItem('token', response.data.token);
+                        localStorage.setItem('user_id', response.data);
                         navigate('/');
                     }
                 })
@@ -62,7 +62,7 @@ export default function Login({ handleToggle }) {
                         className='h-full p-5 rounded w-full'
                         value={ password }
                         onChange={ (event) => setPassword(event.target.value) }
-                        type='text'
+                        type='password'
                     />
                 </div>
 
