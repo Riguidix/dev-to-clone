@@ -37,7 +37,8 @@ exports.login = (req, res) => {
                                 id: user.id,
                                 user: user.username
                             }, process.env.SECRET_TOKEN),
-                            message: "El usuario ha ingresado correctamente."
+                            message: "El usuario ha ingresado correctamente.",
+
                         });
                     }
                 });
@@ -112,6 +113,7 @@ exports.createUser = (req, res) => {
 exports.readUsers = (req, res) => {
     try {
         User.find({})
+            .select('-password')
             .then(users => {
                 if (users.length === 0 || users === null) {
                     res.status(200).json({
@@ -160,6 +162,7 @@ exports.readUserById = (req, res) => {
         }
 
         User.findById(req.params.id)
+            .select('-password')
             .then(user => {
                 if (user === null) {
                     res.status(200).json({
