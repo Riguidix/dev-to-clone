@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom'
 
 import Button from "../Button";
 
+// TODO: Add submit on enter
+
 export default function Login() {
     const navigate = useNavigate();
     const [email, setEmail] = useState('');

@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 
 import Button from "../components/Button";
 
+// TODO: Add submit on enter
+
 function Label_Input({ id, value, label, setValue, type }) {
     return (
         <div className='mb-2 w-full'>

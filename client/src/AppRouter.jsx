@@ -11,10 +11,10 @@ export default function AppRouter() {
 		<Routes>
 			<Route element={ <MainLayout /> }>
 				<Route path='/' element={ <HomePage page='home' /> } />
-				<Route path='/signUp/register' element={ <RegisterPage page='register' /> } />
 			</Route>
 			<Route path='/signIn' element={ <SignPage page='signIn' /> } />
 			<Route path='/signUp' element={ <SignPage page='signUp' /> } />
+			<Route path='/register' element={ <RegisterPage page='register' /> } />
 		</Routes>
 	);
 }
