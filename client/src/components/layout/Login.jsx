@@ -1,9 +1,11 @@
-import { useState } from "react";
 import axios from 'axios';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom'
 
 import Button from "../Button";
 
 export default function Login() {
+    const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -29,6 +31,8 @@ export default function Login() {
                                 }
                                 
                                 localStorage.setItem('user', JSON.stringify(user));
+
+                                navigate('/');
                             })
                             .catch(error => console.error('find user:', error));
                     }
