@@ -5,16 +5,16 @@ import Footer from '../components/layout/Footer';
 
 export default function MainLayout() {
     return(
-        <div className='grid grid-rows-12 h-screen w-full'>
-            <div className='row-span-1 text-center'>
+        <div className='grid grid-rows-12 h-screen w-screen'>
+            <div>
                 <Header />
             </div>
 
-            <div className='row-span-10'>
+            <div className='flex items-center justify-center row-span-10'>
                 <Outlet />
             </div>
 
-            <div className='row-span-1 text-center'>
+            <div>
                 <Footer />
             </div>
         </div>
