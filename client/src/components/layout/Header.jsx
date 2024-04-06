@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faBell, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
@@ -6,21 +7,33 @@ import ReactLogo from '../../assets/react.svg';
 import Button from '../Button';
 import SearchBar from '../SearchBar';
 import ProfileMenu from '../layout/ProfileMenu';
+import Navigation from './Navigation';
 
 export default function Header() {
-    const token = localStorage.getItem('token');
+    const [toggle, setToggle] = useState(false);
     const navigate = useNavigate();
+
+    const token = localStorage.getItem('token');
 
     return (
         <div className='flex h-full items-center justify-center shadow-md w-full'>
             {/* ========== MOBILE LAYOUT ========== */}
-            <div className='grid grid-cols-10 md:hidden h-full w-full'>
+            {
+                toggle && <Navigation handleToggle={ () => setToggle(!toggle) } />
+            }
+
+            <div className={
+                toggle
+                    ? 'bg-red-500 grid grid-cols-10 md:hidden h-full opacity-50 relative w-full'
+                    : 'grid grid-cols-10 md:hidden h-full relative w-full'                    
+            }>
+
                 <div className='col-span-3 sm:col-span-2 grid grid-cols-2'>
                     <div className='flex items-center justify-center'>
                         <FontAwesomeIcon
                             className='hover:bg-blue-200 hover:cursor-pointer hover:text-blue-500 p-2 rounded-md text-xl'
                             icon={ faBars }
-                            onClick={ () => {} }
+                            onClick={ () => setToggle(!toggle) }
                         />
                     </div>
 
