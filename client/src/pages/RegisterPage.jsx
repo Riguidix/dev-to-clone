@@ -1,117 +1,123 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from 'axios';
+import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 import Button from "../components/Button";
 
-function Label_Input({value, action, label, type }) {
+function Label_Input({ id, value, label, setValue, type }) {
     return (
-        <>
-            <label
-                className='text-xl'
-                htmlFor={ value + '_input' }
-            >
+        <div className='mb-2 w-full'>
+            <label htmlFor={ id }>
                 { label }
             </label>
 
             <input
-                id={ value + '_input' }
-                className='border border-gray-500 h-full p-5 rounded-lg w-full'
+                id={ id }
+                className='bg-white border border-slate-300 focus:border-sky-400 mt-1 focus:outline-none px-3 py-2 focus:ring-1 focus:ring-sky-500 rounded-md shadow-sm text-md w-full'
                 value={ value }
-                onChange={ action }
+                onChange={ setValue }
                 type={ type }
-            />
-        </>
+                />
+        </div>
     );
 }
 
 export default function RegisterPage() {
+    const navigate = useNavigate();
+
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passwordConfirmation, setPasswordConfirmation] = useState('');
 
-    const navigate = useNavigate();
-
-    function handleRegisterSubmit (event) {
-        if (username !== '' || email !== '' || password !== '' || passwordConfirmation !== '') {
+    function handleRegister () {
+        if (username !== '' && email !== '' && password !== '' && passwordConfirmation !== '') {
             if (password === passwordConfirmation) {
                 let user = {
                     username,
                     email,
                     password
                 }
+
                 axios.post('http://localhost:3000/api/users/', user)
-                    .then((data) => {
-                        if (data.data.success === true && data.status === 200) {
+                    .then(response => {
+                        if (response.data.success && response.status) {
                             navigate('/signIn');
                         } else {
-                            alert(data.data.message);
+                            alert(response.data.message);
                         }
                     })
-                    .catch(error => console.error(error));
+                    .catch(error => {
+                        if (error.response.status === 400) {
+                            alert (error.response.data.message);
+                        }
+                    });
             }
         }
     }
-
+    
     const inputs = [
         {
+            id: 'username_input',
             value: username,
-            action: (event) => setUsername(event.target.value),
             label: 'Username',
+            setValue: (event) => setUsername(event.target.value),
             type: 'text'
         },
         {
+            id: 'email_input',
             value: email,
-            action: (event) => setEmail(event.target.value),
             label: 'Email',
+            setValue: (event) => setEmail(event.target.value),
             type: 'email'
         },
         {
+            id: 'password_input',
             value: password,
-            action: (event) => setPassword(event.target.value),
             label: 'Password',
+            setValue: (event) => setPassword(event.target.value),
             type: 'password'
         },
         {
+            id: 'password_confirmation_input',
             value: passwordConfirmation,
-            action: (event) => setPasswordConfirmation(event.target.value),
             label: 'Password Confirmation',
+            setValue: (event) => setPasswordConfirmation(event.target.value),
             type: 'password'
-        }
+        },
     ];
 
     return (
-        <div className='flex relative h-full items-center justify-center w-full'>
-            <div className='border bg-white grid grid-rows-6 gap-5 h-3/4 p-5 rounded w-1/3'>
-                <div className='flex items-center justify-start'>
-                    <h1 className='text-xl font-bold'>
-                        Create your account
-                    </h1>
-                </div>
+        <div className='flex flex-wrap h-3/6 items-center justify-center p-5 shadow w-5/6 md:w-2/3 lg:w-1/3'>
+            <div className='w-full'>
+                <h1 className='font-bold text-xl'>
+                    Create account
+                </h1>
+            </div>
 
+            <div className='w-full'>
                 {
-                    inputs.map((input) => {
+                    inputs.map((input, index) => {
                         return (
-                            <div
-                                className='row-span-1 grid grid-rows-2 gap-3 w-full'
-                                key={ input.label }
-                            >
+                            <div key={ index } >
                                 <Label_Input
+                                    id={ input.id }
                                     value={ input.value }
-                                    action={ input.action }
                                     label={ input.label }
+                                    setValue={ input.setValue }
                                     type={ input.type }
                                 />
                             </div>
-                        )
+                        );
                     })
                 }
+            </div>
 
+            <div className='w-1/3'>
                 <Button
-                    style='bg-blue-500 mt-2 h-16 rounded-lg hover:bg-blue-700 hover:text-blue-200 transition ease-in-out text-white w-1/3'
+                    style='bg-blue-700 hover:bg-blue-800 ease-in-out px-5 py-2 rounded text-white transition w-full'
                     title='Sign Up'
-                    action={ handleRegisterSubmit }
+                    action={ handleRegister }
                 />
             </div>
         </div>
