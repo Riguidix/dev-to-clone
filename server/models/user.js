@@ -33,10 +33,27 @@ const userSchema = new Schema({
        type: String,
        default: '' 
     },
+    theme: {
+        type: String,
+        enum: ['light', 'dark'],
+        default: 'light'
+    },
     posts: [
         {
             type: Schema.Types.ObjectId,
             ref: 'Post'
+        }
+    ],
+    following: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'User'
+        }
+    ],
+    followers: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'User'
         }
     ]
 });
