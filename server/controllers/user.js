@@ -416,6 +416,86 @@ exports.updateFollowing = (req, res) => {
  * @param {Object} res
  * @param {ObjecID} id 
  */
+exports.updateUnfollow = (req, res) => {
+    try {
+        if (!mongoose.isValidObjectId(req.body.fromID)) {
+            res.status(400).json({
+                success: false,
+                message: "El identificador del Usuario que quiere seguir tiene problemas de validación.",
+                errors: ["El tipo del identificador id es incorrecto."]
+            });
+            return;
+        }
+
+        if (!mongoose.isValidObjectId(req.body.toID)) {
+            res.status(400).json({
+                success: false,
+                message: "El identificador del Usuario a seguir tiene problemas de validación.",
+                errors: ["El tipo del identificador id es incorrecto."]
+            });
+            return;
+        }
+
+        User.findOneAndUpdate({ _id: req.body.fromID }, { $pull: { following: req.body.toId } }, { new:true })
+            .then(userFrom => {
+                if (userFrom === null) {
+                    res.status(200).json({
+                        success: true,
+                        message: "No se encontraron users con ese identificador para actualizar.",
+                        data: []
+                    });
+                    return;
+                }
+
+                User.findOneAndUpdate({ _id: req.body.toID }, { $pull: { followers: req.body.fromID } }, { new:true })
+                    .then(userTo => {
+                        if (userTo === null) {
+                            res.status(200).json({
+                                success: true,
+                                message: "No se encontraron users con ese identificador para actualizar.",
+                                data: []
+                            });
+                            return;
+                        }
+
+                        res.status(200).json({
+                            success: true,
+                            message: "El unfollow se actualizo correctamente.",
+                            users: {
+                                userFrom,
+                                userTo
+                            }
+                        });
+                    })
+                    .catch(error => {
+                        res.status(400).json({
+                            success: false,
+                            message: "Hubo un error al actualizar el usuario a seguir.",
+                            error: ["Hubo un error al actualizar el usuario a seguir."]
+                        });
+                    });
+            })
+            .catch(error => {
+                res.status(400).json({
+                    success: false,
+                    message: "Hubo un error al actualizar el usuario a seguir.",
+                    error: ["Hubo un error al actualizar el usuario que sigue."]
+                });
+            });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "Hubo un error en el servidor."
+        });
+    }
+}
+
+/**
+ * Find an User by ID and Delete
+ * @param {Object} req 
+ * @param {Object} res
+ * @param {ObjecID} id 
+ */
 exports.deleteUser = (req, res) => {
     try {
         if (!mongoose.isValidObjectId(req.params.id)) {
