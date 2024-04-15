@@ -33,10 +33,27 @@ const userSchema = new Schema({
        type: String,
        default: '' 
     },
+    theme: {
+        type: String,
+        enum: ['light', 'dark'],
+        default: 'light'
+    },
     posts: [
         {
             type: Schema.Types.ObjectId,
             ref: 'Post'
+        }
+    ],
+    following: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'User'
+        }
+    ],
+    followers: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'User'
         }
     ]
 });
@@ -69,7 +86,9 @@ userSchema.pre('save', function (next) {
  * this same method doesn't recognize that mongo query
  */
 userSchema.pre('findOneAndUpdate', async function (next) {
-    this._update.password = bcrypt.hashSync(this._update.password, SALT_WORK_FACTOR);
+    if (this._update.password !== undefined) {
+        this._update.password = bcrypt.hashSync(this._update.password, SALT_WORK_FACTOR);
+    }
     next();
 });
 

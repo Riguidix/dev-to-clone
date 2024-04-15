@@ -8,7 +8,9 @@ router.post('/', userController.createUser);
 router.get('/', userController.readUsers);
 router.get('/:id', userController.readUserById);
 router.put('/:id', userController.updateUser);
-router.patch('/:id', userController.updateUserPass);
+router.patch('/p/:id', userController.updateUserPass);
+router.patch('/follow/', userController.updateFollowing);
+router.patch('/unfollow/', userController.updateUnfollow);
 router.delete('/:id', userController.deleteUser);
 
 module.exports = router;
