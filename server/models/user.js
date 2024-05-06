@@ -43,7 +43,7 @@ const userSchema = new Schema(
           values: ["light", "dark"],
           message: "The {VALUE} is not supported.",
         },
-        default: "",
+        default: "light",
       },
       displayEmail: {
         type: Boolean,
