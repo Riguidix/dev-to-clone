@@ -37,6 +37,7 @@ exports.login = (req, res) => {
                 {
                   id: user.id,
                   user: user.username,
+                  theme: user.settings.theme
                 },
                 process.env.SECRET_TOKEN
               ),
@@ -71,8 +72,6 @@ exports.createUser = (req, res) => {
       email: req.body.email,
       password: req.body.password,
       profilePicture: `https://joesch.moe/api/v1/${req.body.username}`,
-      website: req.body.website,
-      bio: req.body.bio,
     });
 
     newUser
@@ -219,8 +218,6 @@ exports.updateUser = (req, res) => {
       email: req.body.email,
       password: req.body.password,
       profilePicture: `https://joesch.moe/api/v1/${req.body.username}`,
-      website: req.body.website,
-      bio: req.body.bio,
     };
 
     User.findOneAndUpdate({ _id: req.params.id }, updateUser, {
