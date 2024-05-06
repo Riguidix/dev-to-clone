@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 
 const User = require("../models/user");
-const errorValidator = require("../util/errorValidator");
+const errorValidator = require("../utils/errorValidator");
 
 /**
  * Login an User

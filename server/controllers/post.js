@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Post = require("../models/post");
 const User = require("../models/user");
 
-const errorValidator = require("../util/errorValidator");
+const errorValidator = require("../utils/errorValidator");
 
 /**
  * Create a Post
