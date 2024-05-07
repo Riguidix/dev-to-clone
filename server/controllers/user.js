@@ -79,7 +79,7 @@ exports.createUser = (req, res) => {
       .then(() => {
         res.status(200).json({
           success: true,
-          message: "El usuario se ha creado correctamente.",
+          message: "The user was created successfully.",
         });
       })
       .catch((error) => {
@@ -88,7 +88,7 @@ exports.createUser = (req, res) => {
         if (validationErrors) {
           res.status(400).json({
             success: false,
-            message: "La creación del usuario tiene problemas de validación.",
+            message: "The creation of the user has the next validation errors.",
             errors: validationErrors,
           });
           return;
@@ -96,13 +96,13 @@ exports.createUser = (req, res) => {
 
         res.status(400).json({
           success: false,
-          message: "Hubo un error al crear el usuario.",
+          message: "There's an error while creating the user.",
         });
       });
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: "Hubo un error en el servidor.",
+      message: "There's an error on the server.",
     });
   }
 };
