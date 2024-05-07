@@ -68,8 +68,9 @@ exports.login = (req, res) => {
 exports.createUser = (req, res) => {
   try {
     let newUser = new User({
-      username: req.body.username,
+      name: req.body.name,
       email: req.body.email,
+      username: req.body.username,
       password: req.body.password,
       profilePicture: `https://joesch.moe/api/v1/${req.body.username}`,
     });
