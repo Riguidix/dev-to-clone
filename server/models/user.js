@@ -10,36 +10,27 @@ const userSchema = new Schema(
     name: {
       type: String,
       required: [true, "The name of the user is required."],
-      maxLength: [
-        50,
-        "The name of the user should be less than 50 characters.",
-      ],
+      maxLength: [50, "The name of the user should be less than 50 characters."],
     },
     username: {
       type: String,
       required: [true, "The username of the user is required."],
       unique: [true, "The username of the user has to be unique."],
-      maxLength: [
-        36,
-        "The username of the user should be less than 36 characters.",
-      ],
+      maxLength: [36, "The username of the user should be less than 36 characters."],
     },
     email: {
       type: String,
       required: [true, "The email of the user is required."],
-      maxLength: [
-        254,
-        "The email of the username should be less than 254 characters.",
-      ],
+      maxLength: [254, "The email of the username should be less than 254 characters."],
     },
     password: {
       type: String,
       required: [true, "The password of the user is required."],
-      minLength: [
-        8,
-        "The password of the user should be longer than 8 characters.",
-      ],
+      minLength: [8, "The password of the user should be longer than 8 characters."],
     },
+    posts: [{ type: Schema.Types.ObjectId, ref: "Post" }],
+    following: [{ type: Schema.Types.ObjectId, ref: "User" }],
+    followers: [{ type: Schema.Types.ObjectId, ref: "User" }],
     profilePicture: {
       type: String,
       default: "",
