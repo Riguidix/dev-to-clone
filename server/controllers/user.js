@@ -197,7 +197,7 @@ exports.readUserById = (req, res) => {
 };
 
 /**
- * Find an User by ID amd Update
+ * Find an User by ID and Update
  * @param {Object} req
  * @param {Object} res
  * @param {ObjecID} id
@@ -207,8 +207,8 @@ exports.updateUser = (req, res) => {
     if (!mongoose.isValidObjectId(req.params.id)) {
       res.status(400).json({
         success: false,
-        message: "El identificador del Usuario tiene problemas de validación.",
-        errors: ["El tipo del identificador id es incorrecto."],
+        message: "The user identificator has some validation errors.",
+        errors: ["The type of ID is incorrect."],
       });
       return;
     }
@@ -244,8 +244,7 @@ exports.updateUser = (req, res) => {
         if (user === null) {
           res.status(200).json({
             success: true,
-            message:
-              "No se encontraron usuarios con ese identificador para actualizar.",
+            message: "There's no users to retrieve with that identificator to update.",
             data: [],
           });
           return;
@@ -253,7 +252,7 @@ exports.updateUser = (req, res) => {
 
         res.status(200).json({
           success: true,
-          message: "El usuario se ha actualizado correctamente.",
+          message: "The user was updated successfully.",
           data: user,
         });
       })
@@ -263,8 +262,7 @@ exports.updateUser = (req, res) => {
         if (validationErrors) {
           res.status(400).json({
             success: false,
-            message:
-              "La actualización del usuario tiene problemas de validación.",
+            message: "The update of the user has the next validation errors.",
             errors: validationErrors,
           });
           return;
@@ -272,13 +270,13 @@ exports.updateUser = (req, res) => {
 
         res.status(400).json({
           success: false,
-          message: "Hubo un error al actualizar el usuario.",
+          message: "There's an error while updating the user.",
         });
       });
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: "Hubo un error en el servidor.",
+      message: "There's an error on the server.",
     });
   }
 };
