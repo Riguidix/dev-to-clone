@@ -11,7 +11,7 @@ const errorValidator = require("../utils/errorValidator");
  */
 exports.login = (req, res) => {
   try {
-    User.findOne({ username: req.body.username })
+    User.findOne({ email: req.body.email })
       .then((user) => {
         if (user === null) {
           res.status(200).json({
