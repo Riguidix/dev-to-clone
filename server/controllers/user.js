@@ -121,7 +121,7 @@ exports.readUsers = (req, res) => {
         if (users.length === 0 || users === null) {
           res.status(200).json({
             success: true,
-            message: "No se encontraron usuarios para listar.",
+            message: "There's no users to list.",
             data: users,
           });
           return;
@@ -129,20 +129,20 @@ exports.readUsers = (req, res) => {
 
         res.status(200).json({
           success: true,
-          message: "Los usuarios se listaron correctamente.",
+          message: "The user was retrieved successfully.",
           data: users,
         });
       })
       .catch((error) => {
         res.status(400).json({
           success: false,
-          message: "Hubo un error al listar los usuarios.",
+          message: "There's an error while retrieving the users.",
         });
       });
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: "Hubo un error en el servidor.",
+      message: "There's an error on the server.",
     });
   }
 };
