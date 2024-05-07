@@ -214,10 +214,26 @@ exports.updateUser = (req, res) => {
     }
 
     let updateUser = {
-      username: req.body.username,
+      name: req.body.name,
       email: req.body.email,
+      username: req.body.username,
       password: req.body.password,
-      profilePicture: `https://joesch.moe/api/v1/${req.body.username}`,
+      profilePicture: req.body.username ? `https://joesch.moe/api/v1/${req.body.username}` : undefined,
+      settings: {
+        theme: req.body.theme,
+        displayEmail: req.body.displayEmail,
+        font: req.body.font
+      },
+      profile: {
+        website: req.body.website,
+        location: req.body.location,
+        bio: req.body.bio,
+        currentlyLearning: req.body.currentlyLearning,
+        availableFor: req.body.availableFor,
+        skillsLanguages: req.body.skillsLanguages,
+        work: req.body.work,
+        education: req.body.education
+      }
     };
 
     User.findOneAndUpdate({ _id: req.params.id }, updateUser, {
