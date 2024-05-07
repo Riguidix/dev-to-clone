@@ -16,7 +16,7 @@ exports.login = (req, res) => {
         if (user === null) {
           res.status(200).json({
             success: true,
-            message: "El usuario y/o contraseña son incorrectos",
+            message: "Oops. The email or password you entered doesn't match. Try again!",
             data: [],
           });
           return;
@@ -26,7 +26,7 @@ exports.login = (req, res) => {
           if (error || !isMatch) {
             res.status(200).json({
               success: true,
-              message: "El usuario y/o contraseña son incorrectos",
+              message: "Oops. The email or password you entered doesn't match. Try again!",
               data: [],
             });
             return;
@@ -41,7 +41,7 @@ exports.login = (req, res) => {
                 },
                 process.env.SECRET_TOKEN
               ),
-              message: "El usuario ha ingresado correctamente.",
+              message: "The user has sign in successfully.",
             });
           }
         });
@@ -49,13 +49,13 @@ exports.login = (req, res) => {
       .catch((error) => {
         res.status(400).json({
           success: false,
-          message: "Hubo un error al ingresar el usuario.",
+          message: "There's an error while sign in.",
         });
       });
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: "Hubo un error en el servidor.",
+      message: "There's an error on the server.",
     });
   }
 };
