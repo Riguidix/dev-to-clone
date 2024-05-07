@@ -7,6 +7,14 @@ const SALT_WORK_FACTOR = 10;
 
 const userSchema = new Schema(
   {
+    name: {
+      type: String,
+      required: [true, "The name of the user is required."],
+      maxLength: [
+        50,
+        "The name of the user should be less than 50 characters.",
+      ],
+    },
     username: {
       type: String,
       required: [true, "The username of the user is required."],
