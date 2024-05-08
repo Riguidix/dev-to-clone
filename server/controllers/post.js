@@ -252,6 +252,16 @@ exports.updatePostComment = (req, res) => {
       return;
     }
 
+    if (!mongoose.isValidObjectId(req.body.user)) {
+      res.status(400).json({
+        success: false,
+        message: "The user identificator has some validation errors.",
+        errors: ["The type of ID is incorrect."],
+      });
+      return;
+    }
+
+
     let newComment = {
       user: req.body.user,
       comment: req.body.comment,
@@ -280,6 +290,17 @@ exports.updatePostComment = (req, res) => {
         });
       })
       .catch((error) => {
+        let validationErrors = errorValidator(error);
+
+        if (validationErrors) {
+          res.status(400).json({
+            success: false,
+            message: "The update of the post comment has the next validation errors.",
+            errors: validationErrors,
+          });
+          return;
+        }
+
         res.status(400).json({
           success: false,
           message: "There's an error while updating the post's comments.",
