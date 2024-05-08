@@ -342,7 +342,7 @@ exports.updateUserPass = (req, res) => {
 };
 
 /**
- * Find an User by ID and Delete
+ * Find an User by ID and Update the following
  * @param {Object} req
  * @param {Object} res
  * @param {ObjecID} id
@@ -352,9 +352,8 @@ exports.updateFollowing = (req, res) => {
     if (!mongoose.isValidObjectId(req.body.fromID)) {
       res.status(400).json({
         success: false,
-        message:
-          "El identificador del Usuario que quiere seguir tiene problemas de validación.",
-        errors: ["El tipo del identificador id es incorrecto."],
+        message: "The user identificator has some validation errors.",
+        errors: ["The type of ID is incorrect."],
       });
       return;
     }
@@ -362,9 +361,8 @@ exports.updateFollowing = (req, res) => {
     if (!mongoose.isValidObjectId(req.body.toID)) {
       res.status(400).json({
         success: false,
-        message:
-          "El identificador del Usuario a seguir tiene problemas de validación.",
-        errors: ["El tipo del identificador id es incorrecto."],
+        message: "The user identificator has some validation errors.",
+        errors: ["The type of ID is incorrect."],
       });
       return;
     }
@@ -372,8 +370,8 @@ exports.updateFollowing = (req, res) => {
     if (req.body.fromID === req.body.toID) {
       res.status(400).json({
         success: false,
-        message: "No te puedes auto-seguir.",
-        error: ["No puedes hacerte follow"],
+        message: "You can't follow this account",
+        errors: ["Can't follow yourself."],
       });
       return;
     }
@@ -387,8 +385,7 @@ exports.updateFollowing = (req, res) => {
         if (userFrom === null) {
           res.status(200).json({
             success: true,
-            message:
-              "No se encontraron users con ese identificador para actualizar.",
+            message: "There's no users to retrieve with that identificator to update.",
             data: [],
           });
           return;
@@ -403,8 +400,7 @@ exports.updateFollowing = (req, res) => {
             if (userTo === null) {
               res.status(200).json({
                 success: true,
-                message:
-                  "No se encontraron users con ese identificador para actualizar.",
+                message: "There's no users to retrieve with that identificator to update.",
                 data: [],
               });
               return;
@@ -412,7 +408,7 @@ exports.updateFollowing = (req, res) => {
 
             res.status(200).json({
               success: true,
-              message: "El follow se actualizo correctamente.",
+              message: "The follow was updated successfully.",
               users: {
                 userFrom,
                 userTo,
@@ -422,8 +418,7 @@ exports.updateFollowing = (req, res) => {
           .catch((error) => {
             res.status(400).json({
               success: false,
-              message: "Hubo un error al actualizar el usuario a seguir.",
-              error: ["Hubo un error al actualizar el usuario a seguir."],
+              message: "There's an error while updating the user.",
             });
           });
       })
@@ -431,14 +426,13 @@ exports.updateFollowing = (req, res) => {
         console.error(error);
         res.status(400).json({
           success: false,
-          message: "Hubo un error al actualizar el usuario a seguir.",
-          error: ["Hubo un error al actualizar el usuario que sigue."],
+          message: "There's an error while updating the user.",
         });
       });
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: "Hubo un error en el servidor.",
+      message: "There's an error on the server.",
     });
   }
 };
