@@ -292,8 +292,8 @@ exports.updateUserPass = (req, res) => {
     if (!mongoose.isValidObjectId(req.params.id)) {
       res.status(400).json({
         success: false,
-        message: "El identificador del Usuario tiene problemas de validación.",
-        errors: ["El tipo del identificador id es incorrecto."],
+        message: "The user identificator has some validation errors.",
+        errors: ["The type of ID is incorrect."],
       });
       return;
     }
@@ -301,12 +301,12 @@ exports.updateUserPass = (req, res) => {
     let updatePassword = { password: req.body.password };
 
     User.findOneAndUpdate({ _id: req.params.id }, updatePassword, { new: true })
+      .select("-password")
       .then((user) => {
         if (user === null) {
           res.status(200).json({
             success: true,
-            message:
-              "No se encontraron usuarios con ese identificador para actualizar.",
+            message: "There's no users to retrieve with that identificator to update.",
             data: [],
           });
           return;
@@ -314,7 +314,7 @@ exports.updateUserPass = (req, res) => {
 
         res.status(200).json({
           success: true,
-          message: "La contraseña del usuario se ha actualizado correctamente.",
+          message: "The password of the user was updated successfully.",
           data: user,
         });
       })
@@ -322,21 +322,21 @@ exports.updateUserPass = (req, res) => {
         if (req.body.password === undefined || req.body.password.length < 8) {
           res.status(400).json({
             success: false,
-            message: "La contraseña es requerida para su actualiación.",
-            errors: ["Hubo un error al actualizar la contraseña"],
+            message: "The password is required to update on user.",
+            errors: ["The password is required to update"],
           });
           return;
         }
 
         res.status(400).json({
           success: false,
-          message: "Hubo un error al actualizar el usuario.",
+          message: "There's an error while updating the user.",
         });
       });
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: "Hubo un error en el servidor.",
+      message: "There's an error on the server.",
     });
   }
 };
