@@ -16,7 +16,8 @@ exports.login = (req, res) => {
         if (user === null) {
           res.status(200).json({
             success: true,
-            message: "Oops. The email or password you entered doesn't match. Try again!",
+            message:
+              "Oops. The email or password you entered doesn't match. Try again!",
             data: [],
           });
           return;
@@ -26,7 +27,8 @@ exports.login = (req, res) => {
           if (error || !isMatch) {
             res.status(200).json({
               success: true,
-              message: "Oops. The email or password you entered doesn't match. Try again!",
+              message:
+                "Oops. The email or password you entered doesn't match. Try again!",
               data: [],
             });
             return;
@@ -37,7 +39,7 @@ exports.login = (req, res) => {
                 {
                   id: user.id,
                   user: user.username,
-                  theme: user.settings.theme
+                  theme: user.settings.theme,
                 },
                 process.env.SECRET_TOKEN
               ),
@@ -218,11 +220,13 @@ exports.updateUser = (req, res) => {
       email: req.body.email,
       username: req.body.username,
       password: req.body.password,
-      profilePicture: req.body.username ? `https://joesch.moe/api/v1/${req.body.username}` : undefined,
+      profilePicture: req.body.username
+        ? `https://joesch.moe/api/v1/${req.body.username}`
+        : undefined,
       settings: {
         theme: req.body.theme,
         displayEmail: req.body.displayEmail,
-        font: req.body.font
+        font: req.body.font,
       },
       profile: {
         website: req.body.website,
@@ -232,8 +236,8 @@ exports.updateUser = (req, res) => {
         availableFor: req.body.availableFor,
         skillsLanguages: req.body.skillsLanguages,
         work: req.body.work,
-        education: req.body.education
-      }
+        education: req.body.education,
+      },
     };
 
     User.findOneAndUpdate({ _id: req.params.id }, updateUser, {
@@ -244,7 +248,8 @@ exports.updateUser = (req, res) => {
         if (user === null) {
           res.status(200).json({
             success: true,
-            message: "There's no users to retrieve with that identificator to update.",
+            message:
+              "There's no users to retrieve with that identificator to update.",
             data: [],
           });
           return;
@@ -306,7 +311,8 @@ exports.updateUserPass = (req, res) => {
         if (user === null) {
           res.status(200).json({
             success: true,
-            message: "There's no users to retrieve with that identificator to update.",
+            message:
+              "There's no users to retrieve with that identificator to update.",
             data: [],
           });
           return;
@@ -352,7 +358,8 @@ exports.updateFollowing = (req, res) => {
     if (!mongoose.isValidObjectId(req.body.fromID)) {
       res.status(400).json({
         success: false,
-        message: "The user who gives the follow it's identificator has some validation errors.",
+        message:
+          "The user who gives the follow it's identificator has some validation errors.",
         errors: ["The type of ID is incorrect."],
       });
       return;
@@ -361,7 +368,8 @@ exports.updateFollowing = (req, res) => {
     if (!mongoose.isValidObjectId(req.body.toID)) {
       res.status(400).json({
         success: false,
-        message: "The user who gets the follower it's identificator has some validation errors.",
+        message:
+          "The user who gets the follower it's identificator has some validation errors.",
         errors: ["The type of ID is incorrect."],
       });
       return;
@@ -385,8 +393,8 @@ exports.updateFollowing = (req, res) => {
         if (userFrom === null) {
           res.status(200).json({
             success: true,
-            message: "There's no users to retrieve with that identificator to update.",
-            data: [],
+            message:
+              "There's no users to retrieve with that identificator to update.",
           });
           return;
         }
@@ -400,15 +408,15 @@ exports.updateFollowing = (req, res) => {
             if (userTo === null) {
               res.status(200).json({
                 success: true,
-                message: "There's no users to retrieve with that identificator to update.",
-                data: [],
+                message:
+                  "There's no users to retrieve with that identificator to update.",
               });
               return;
             }
 
             res.status(200).json({
               success: true,
-              message: "The follow was updated successfully."
+              message: "The follow was updated successfully.",
             });
           })
           .catch((error) => {
@@ -444,7 +452,8 @@ exports.updateUnfollow = (req, res) => {
     if (!mongoose.isValidObjectId(req.body.fromID)) {
       res.status(400).json({
         success: false,
-        message: "The user identificator has some validation errors.",
+        message:
+          "The user who gives the unfollow it's identificator has some validation errors.",
         errors: ["The type of ID is incorrect."],
       });
       return;
@@ -453,7 +462,8 @@ exports.updateUnfollow = (req, res) => {
     if (!mongoose.isValidObjectId(req.body.toID)) {
       res.status(400).json({
         success: false,
-        message: "The user identificator has some validation errors.",
+        message:
+          "The user who gets the unfollow it's identificator has some validation errors.",
         errors: ["The type of ID is incorrect."],
       });
       return;
@@ -461,15 +471,15 @@ exports.updateUnfollow = (req, res) => {
 
     User.findOneAndUpdate(
       { _id: req.body.fromID },
-      { $pull: { following: req.body.toId } },
+      { $pull: { following: req.body.toID } },
       { new: true }
     )
       .then((userFrom) => {
         if (userFrom === null) {
           res.status(200).json({
             success: true,
-            message: "There's no users to retrieve with that identificator to update.",
-            data: [],
+            message:
+              "There's no users to retrieve with that identificator to update.",
           });
           return;
         }
@@ -483,8 +493,8 @@ exports.updateUnfollow = (req, res) => {
             if (userTo === null) {
               res.status(200).json({
                 success: true,
-                message: "There's no users to retrieve with that identificator to update.",
-                data: [],
+                message:
+                  "There's no users to retrieve with that identificator to update.",
               });
               return;
             }
@@ -492,10 +502,6 @@ exports.updateUnfollow = (req, res) => {
             res.status(200).json({
               success: true,
               message: "The user was unfollowed successfully.",
-              users: {
-                userFrom,
-                userTo,
-              },
             });
           })
           .catch((error) => {
