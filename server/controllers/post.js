@@ -324,8 +324,8 @@ exports.updatePostLikes = (req, res) => {
     if (!mongoose.isValidObjectId(req.params.id)) {
       res.status(400).json({
         success: false,
-        message: "El identificador del Post tiene problemas de validación.",
-        errors: ["El tipo del identificador id es incorrecto."],
+        message: "The post identificator has some validation errors.",
+        errors: ["The type of ID is incorrect."],
       });
       return;
     }
@@ -333,8 +333,8 @@ exports.updatePostLikes = (req, res) => {
     if (!mongoose.isValidObjectId(req.body.user)) {
       res.status(400).json({
         success: false,
-        message: "El identificador del Usuario tiene problemas de validación.",
-        errors: ["El tipo del identificador id es incorrecto."],
+        message: "The user identificator has some validation errors.",
+        errors: ["The type of ID is incorrect."],
       });
       return;
     }
@@ -349,7 +349,7 @@ exports.updatePostLikes = (req, res) => {
           res.status(200).json({
             success: true,
             message:
-              "No se encontraron posts con ese identificador para actualizar.",
+              "There's no post to retrieve with that identificator to update.",
             data: [],
           });
           return;
@@ -357,20 +357,20 @@ exports.updatePostLikes = (req, res) => {
 
         res.status(200).json({
           success: true,
-          message: "El like del post se ha actualizado correctamente.",
+          message: "The like of the post was updated successfully.",
           data: post,
         });
       })
       .catch((error) => {
         res.status(400).json({
           success: false,
-          message: "Hubo un error al actualizar el comentario del post.",
+          message: "The update of the post comment has the next validation errors.",
         });
       });
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: "Hubo un error en el servidor.",
+      message: "There's an error on the server.",
     });
   }
 };
