@@ -94,7 +94,7 @@ exports.readPosts = (req, res) => {
         if (posts.length === 0 || posts === null) {
           res.status(200).json({
             success: true,
-            message: "No se encontraron posts para listar.",
+            message: "There's no posts to list.",
             data: posts,
           });
           return;
@@ -102,20 +102,20 @@ exports.readPosts = (req, res) => {
 
         res.status(200).json({
           success: true,
-          message: "Los usuarios se listaron correctamente.",
+          message: "The posts was retrieved successfully.",
           data: posts,
         });
       })
       .catch((error) => {
         res.status(400).json({
           success: false,
-          message: "Hubo un error al listar los posts.",
+          message: "There's an error while retrieving the posts.",
         });
       });
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: "Hubo un error en el servidor.",
+      message: "There's an error on the server",
     });
   }
 };
