@@ -385,8 +385,8 @@ exports.deletePost = (req, res) => {
     if (!mongoose.isValidObjectId(req.params.id)) {
       res.status(400).json({
         success: false,
-        message: "El identificador del Post tiene problemas de validación.",
-        errors: ["El tipo del identificador id es incorrecto."],
+        message: "The post identificator has some validation errors.",
+        errors: ["The type of ID is incorrect."],
       });
       return;
     }
@@ -395,19 +395,19 @@ exports.deletePost = (req, res) => {
       .then(() => {
         res.status(200).json({
           success: true,
-          message: "El post se ha eliminado correctamente.",
+          message: "The post was deleted successfully.",
         });
       })
       .catch((error) => {
         res.status(400).json({
           success: false,
-          message: "Hubo un error al eliminar el post.",
+          message: "There's an error while deleting the post.",
         });
       });
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: "Hubo un error en el servidor.",
+      message: "There's an error on the server.",
     });
   }
 };
