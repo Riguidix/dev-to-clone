@@ -14,9 +14,8 @@ exports.createPost = (req, res) => {
     if (!mongoose.isValidObjectId(req.body.author)) {
       res.status(400).json({
         success: false,
-        message:
-          "El identificador del autor del post tiene problemas de validación.",
-        errors: ["El tipo del identificador author es incorrecto."],
+        message: "The author identificator has some validation errors.",
+        errors: ["The type of ID is incorrect."],
       });
       return;
     }
@@ -40,21 +39,21 @@ exports.createPost = (req, res) => {
               .then((user) => {
                 res.status(200).json({
                   success: true,
-                  message:
-                    "El post se ha guardado en el usuario correctamente.",
+                  message: "The post was created successfully.",
                 });
               })
               .catch((error) => {
                 res.status(200).json({
                   success: true,
-                  message: "Hubo un error al guardar el post en el usuario.",
+                  message: "There was an error while creating the post.",
                 });
               });
           })
           .catch((error) => {
             res.status(200).json({
               success: true,
-              message: "Hubo un error al listar el usuario.",
+              message:
+                "There was an error while retrieving the user to create post.",
             });
           });
       })
@@ -64,7 +63,7 @@ exports.createPost = (req, res) => {
         if (validationErrors) {
           res.status(400).json({
             success: false,
-            message: "La creación del post tiene problemas de validación.",
+            message: "The creation of post have the next validation errors.",
             errors: validationErrors,
           });
           return;
@@ -72,13 +71,13 @@ exports.createPost = (req, res) => {
 
         res.status(400).json({
           success: false,
-          message: "Hubo un error al crear el post.",
+          message: "There was an error while creating the post.",
         });
       });
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: "Hubo un error en el servidor.",
+      message: "There's an error on the server.",
     });
   }
 };
