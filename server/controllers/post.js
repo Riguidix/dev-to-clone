@@ -130,8 +130,8 @@ exports.readPostById = (req, res) => {
     if (!mongoose.isValidObjectId(req.params.id)) {
       res.status(400).json({
         success: false,
-        message: "El identificador del Post tiene problemas de validación.",
-        errors: ["El tipo del identificador id es incorrecto."],
+        message: "The post identificator has some validation errors.",
+        errors: ["The type of ID is incorrect."],
       });
       return;
     }
@@ -142,7 +142,7 @@ exports.readPostById = (req, res) => {
           res.status(200).json({
             success: true,
             message:
-              "No se encontraron posts con ese identificador para listar.",
+            "There's no post to retrieve with that identificator.",
             data: [],
           });
           return;
@@ -150,20 +150,20 @@ exports.readPostById = (req, res) => {
 
         res.status(200).json({
           success: true,
-          message: "El post se listo correctamente.",
+          message: "The post was retrieved successfully.",
           data: post,
         });
       })
       .catch((error) => {
         res.status(400).json({
           success: false,
-          message: "Hubo un error al listar el usuario.",
+          message: "There's an error while retrieving the post.",
         });
       });
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: "Hubo un error en el servidor.",
+      message: "There's an error on the server.",
     });
   }
 };
