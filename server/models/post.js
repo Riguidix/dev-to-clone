@@ -4,11 +4,11 @@ const Schema = mongoose.Schema;
 const postSchema = new Schema({
   title: {
     type: String,
-    required: [true, "El título del post es requerido."],
+    required: [true, "The title of the post is required."],
   },
   content: {
     type: String,
-    required: [true, "El contenido del post es requerido."],
+    required: [true, "The content of the post is required."],
   },
   backgroundImage: {
     type: String,
@@ -22,7 +22,7 @@ const postSchema = new Schema({
       },
       comment: {
         type: String,
-        required: true,
+        required: [true, "The comment is required"],
       },
     },
   ],
@@ -35,7 +35,7 @@ const postSchema = new Schema({
   author: {
     type: Schema.Types.ObjectId,
     ref: "User",
-    required: [true, "El autor del post es requerido."],
+    required: [true, "The author of the post is required."],
   },
 });
 
