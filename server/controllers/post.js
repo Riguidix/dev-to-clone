@@ -246,8 +246,8 @@ exports.updatePostComment = (req, res) => {
     if (!mongoose.isValidObjectId(req.params.id)) {
       res.status(400).json({
         success: false,
-        message: "El identificador del Post tiene problemas de validación.",
-        errors: ["El tipo del identificador id es incorrecto."],
+        message: "The post identificator has some validation errors.",
+        errors: ["The type of ID is incorrect."],
       });
       return;
     }
@@ -267,7 +267,7 @@ exports.updatePostComment = (req, res) => {
           res.status(200).json({
             success: true,
             message:
-              "No se encontraron posts con ese identificador para actualizar.",
+              "There's no post to retrieve with that identificator to update.",
             data: [],
           });
           return;
@@ -275,20 +275,20 @@ exports.updatePostComment = (req, res) => {
 
         res.status(200).json({
           success: true,
-          message: "El comentario post se ha actualizado correctamente.",
+          message: "The comment of the post was updated successfully.",
           data: post,
         });
       })
       .catch((error) => {
         res.status(400).json({
           success: false,
-          message: "Hubo un error al actualizar el comentario del post.",
+          message: "There's an error while updating the post's comments.",
         });
       });
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: "Hubo un error en el servidor.",
+      message: "There's an error on the server.",
     });
   }
 };
